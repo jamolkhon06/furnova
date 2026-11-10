@@ -1,54 +1,54 @@
 import express from "express";
 const router = express.Router();
-import memberController from "./controllers/member.controller";
+import customerController from "./controllers/customer.controller";
 import uploader from "./libs/utils/uploader";
 import productController from "./controllers/product.controller";
 import orderController from "./controllers/order.controller";
 
 // Member
-router.get("/member/restaurant", memberController.getRestaurant);
-router.post("/member/login", memberController.login);
-router.post("/member/signup", memberController.signup);
+router.get("/customer/admin", customerController.getCustomer);
+router.post("/customer/login", customerController.login);
+router.post("/customer/signup", customerController.signup);
 router.post(
-  "/member/logout",
-  memberController.verifyAuth,
-  memberController.logout,
+  "/customer/logout",
+  customerController.verifyAuth,
+  customerController.logout,
 );
 router.get(
-  "/member/detail",
-  memberController.verifyAuth,
-  memberController.getMemberDetail,
+  "/customer/detail",
+  customerController.verifyAuth,
+  customerController.getCustomerDetail,
 );
 router.post(
-  "/member/update",
-  memberController.verifyAuth,
-  uploader("members").single("memberImage"),
-  memberController.updateMember,
+  "/customer/update",
+  customerController.verifyAuth,
+  uploader("customers").single("image"),
+  customerController.updateCustomer,
 );
-router.get("/member/top-users", memberController.getTopUsers);
+router.get("/member/top-customers", customerController.getTopCustomers);
 
 // Product
 router.get("/product/all", productController.getProducts);
 router.get(
   "/product/:id",
-  memberController.retrieveAuth,
+  customerController.retrieveAuth,
   productController.getProduct,
 );
 
 // Order
 router.post(
   "/order/create",
-  memberController.verifyAuth,
+  customerController.verifyAuth,
   orderController.createOrder,
 );
 router.get(
   "/order/all",
-  memberController.verifyAuth,
+  customerController.verifyAuth,
   orderController.getMyOrders,
 );
 router.post(
   "/order/update",
-  memberController.verifyAuth,
+  customerController.verifyAuth,
   orderController.updateOrder,
 );
 

@@ -4,7 +4,7 @@
 
 <body>
   <div class="users-container">
-    <% if(!member) { %>
+    <% if(!customer) { %>
     <div class="navigation-menu">
       <ul class="nav justify-content-center">
         <li class="nav-item" style="cursor: pointer">
@@ -64,13 +64,13 @@
             <% users.map((value, index) => { %>
               <tbody style="background: white">
                 <td><%= index + 1 %></td>
-                <td><%= value.memberNick %></td>
-                <td><%= value.memberPhone %></td>
+                <td><%= value.name %></td>
+                <td><%= value.phone %></td>
                 <td style="width: 13%">
                   <select class="spec-select member-status" id="<%= value._id %>">
-                    <option value="ACTIVE" <%= value.memberStatus === 'ACTIVE' ? 'selected' : '' %>>ACTIVE</option>
-                    <option value="BLOCK" <%= value.memberStatus === 'BLOCK' ? 'selected' : '' %>>BLOCK</option>
-                    <option value="DELETE" <%= value.memberStatus === 'DELETE' ? 'selected' : '' %>>DELETE</option>
+                    <option value="ACTIVE" <%= value.status === 'ACTIVE' ? 'selected' : '' %>>ACTIVE</option>
+                    <option value="BLOCK" <%= value.status === 'BLOCK' ? 'selected' : '' %>>BLOCK</option>
+                    <option value="DELETE" <%= value.status === 'DELETE' ? 'selected' : '' %>>DELETE</option>
                   </select>
                 </td>
               </tbody>

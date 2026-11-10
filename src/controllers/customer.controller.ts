@@ -1,41 +1,41 @@
 import { NextFunction, Request, Response } from "express";
 import { T } from "../libs/types/common";
-import MemberService from "../models/Member.service";
+import CustomerService from "../models/Customer.service";
 import {
   ExtendedRequest,
   LoginInput,
-  Member,
-  MemberInput,
-  MemberUpdateInput,
-} from "../libs/types/member";
+  Customer,
+  CustomerInput,
+  CustomerUpdateInput,
+} from "../libs/types/customer";
 import Errors, { HttpCode, Message } from "../libs/Errors";
 import AuthService from "../models/Auth.service";
 import { AUTH_TIMER } from "../libs/config";
 
-const memberService = new MemberService();
+const customerService = new CustomerService();
 const authService = new AuthService();
 
-const memberController: T = {};
+const customerController: T = {};
 
-memberController.getRestaurant = async (req: Request, res: Response) => {
+customerController.getCustomer = async (req: Request, res: Response) => {
   try {
-    console.log("getRestaurant");
+    console.log("[getCustomer] API ishga tushdi!");
 
-    const result = await memberService.getRestaurant();
+    const result = await customerService.getCustomer();
 
     res.status(HttpCode.OK).json(result);
   } catch (err) {
-    console.error("Error, getRestaurant", err);
+    console.error("Error, getCustomer", err);
     if (err instanceof Errors) res.status(err.code).json(err);
     else res.status(Errors.standart.code).json(Errors.standart);
   }
 };
 
-memberController.signup = async (req: Request, res: Response) => {
+customerController.signup = async (req: Request, res: Response) => {
   try {
-    console.log("Signup Page");
-    const input: MemberInput = req.body,
-      result: Member = await memberService.signup(input);
+    console.log("[signup] API ishga tushdi!");
+    const input: CustomerInput = req.body,
+      result: Customer = await customerService.signup(input);
     const token = await authService.createToken(result);
 
     // Token authentication
@@ -44,7 +44,7 @@ memberController.signup = async (req: Request, res: Response) => {
       httpOnly: false,
     });
 
-    res.status(HttpCode.CREATED).json({ member: result, accessToken: token });
+    res.status(HttpCode.CREATED).json({ customer: result, accessToken: token });
   } catch (err) {
     console.error("Error, signup", err);
     if (err instanceof Errors) res.status(err.code).json(err);
@@ -52,11 +52,11 @@ memberController.signup = async (req: Request, res: Response) => {
   }
 };
 
-memberController.login = async (req: Request, res: Response) => {
+customerController.login = async (req: Request, res: Response) => {
   try {
-    console.log("Login Page");
+    console.log("[login] API ishga tushdi!");
     const input: LoginInput = req.body,
-      result = await memberService.login(input),
+      result = await customerService.login(input),
       token = await authService.createToken(result);
 
     // Token authentication
@@ -73,9 +73,9 @@ memberController.login = async (req: Request, res: Response) => {
   }
 };
 
-memberController.logout = (req: ExtendedRequest, res: Response) => {
+customerController.logout = (req: ExtendedRequest, res: Response) => {
   try {
-    console.log("logout");
+    console.log("[logout] API ishga tushdi!");
     res.cookie("accessToken", null, { maxAge: 0, httpOnly: true });
     res.status(HttpCode.OK).json({ logout: true });
   } catch (err) {
@@ -85,61 +85,64 @@ memberController.logout = (req: ExtendedRequest, res: Response) => {
   }
 };
 
-memberController.getMemberDetail = async (
+customerController.getCustomerDetail = async (
   req: ExtendedRequest,
   res: Response,
 ) => {
   try {
-    console.log("getMemberDetail");
-    const result = await memberService.getMemberDetail(req.member);
+    console.log("[getCustomerDetail] API ishga tushdi!");
+    const result = await customerService.getCustomerDetail(req.customer);
 
     res.status(HttpCode.OK).json(result);
   } catch (err) {
-    console.error("Error, getMemberDetail", err);
+    console.error("Error, getCustomerDetail", err);
     if (err instanceof Errors) res.status(err.code).json(err);
     else res.status(Errors.standart.code).json(Errors.standart);
   }
 };
 
-memberController.updateMember = async (req: ExtendedRequest, res: Response) => {
+customerController.updateCustomer = async (
+  req: ExtendedRequest,
+  res: Response,
+) => {
   try {
-    console.log("updateMember");
-    const input: MemberUpdateInput = req.body;
-    if (req.file) input.memberImage = req.file.path.replace(/\\/, "/");
+    console.log("[updateCustomer] API ishga tushdi!");
+    const input: CustomerUpdateInput = req.body;
+    if (req.file) input.image = req.file.path.replace(/\\/, "/");
 
-    const result = await memberService.updateMember(req.member, input);
+    const result = await customerService.updateCustomer(req.customer, input);
 
     res.status(HttpCode.OK).json(result);
   } catch (err) {
-    console.error("Error, updateMember", err);
+    console.error("Error, updateCustomer", err);
     if (err instanceof Errors) res.status(err.code).json(err);
     else res.status(Errors.standart.code).json(Errors.standart);
   }
 };
 
-memberController.getTopUsers = async (req: Request, res: Response) => {
+customerController.getTopCustomers = async (req: Request, res: Response) => {
   try {
-    console.log("getTopUsers");
-    const result = await memberService.getTopUsers();
+    console.log("[getTopCustomers] API ishga tushdi!");
+    const result = await customerService.getTopCustomers();
 
     res.status(HttpCode.OK).json(result);
   } catch (err) {
-    console.error("Error, getTopUsers", err);
+    console.error("Error, getTopCustomers", err);
     if (err instanceof Errors) res.status(err.code).json(err);
     else res.status(Errors.standart.code).json(Errors.standart);
   }
 };
 
-memberController.verifyAuth = async (
+customerController.verifyAuth = async (
   req: ExtendedRequest,
   res: Response,
   next: NextFunction,
 ) => {
   try {
     const token = req.cookies["accessToken"];
-    if (token) req.member = await authService.checkAuth(token);
+    if (token) req.customer = await authService.checkAuth(token);
 
-    if (!req.member)
+    if (!req.customer)
       throw new Errors(HttpCode.UNAUTHORIZED, Message.NOT_AUTHENTICATED);
 
     next();
@@ -150,14 +153,14 @@ memberController.verifyAuth = async (
   }
 };
 
-memberController.retrieveAuth = async (
+customerController.retrieveAuth = async (
   req: ExtendedRequest,
   res: Response,
   next: NextFunction,
 ) => {
   try {
     const token = req.cookies["accessToken"];
-    if (token) req.member = await authService.checkAuth(token);
+    if (token) req.customer = await authService.checkAuth(token);
 
     next();
   } catch (err) {
@@ -166,4 +169,4 @@ memberController.retrieveAuth = async (
   }
 };
 
-export default memberController;
+export default customerController;

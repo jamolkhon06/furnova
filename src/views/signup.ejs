@@ -4,7 +4,12 @@
 
 <body>
   <div class="signup-container">
-    <form onsubmit="return validateSignupForm()" action="/admin/signup" method="POST" enctype="multipart/form-data">
+    <form
+      onsubmit="return validateSignupForm();"
+      action="/admin/signup"
+      method="POST"
+      enctype="multipart/form-data"
+    >
       <div class="signup-frame" style="width: 650px">
         <div class="signup-top">
           <span>Signup</span>
@@ -20,7 +25,7 @@
             <label>Restaurant *</label>
             <input
               type="text"
-              name="memberNick"
+              name="name"
               class="member-nick"
               placeholder="Username"
               value=""
@@ -30,7 +35,7 @@
             <label>Phone *</label>
             <input
               type="text"
-              name="memberPhone"
+              name="phone"
               class="member-phone"
               placeholder="Phone"
               value=""
@@ -42,7 +47,7 @@
             <label>Password *</label>
             <input
               type="password"
-              name="memberPassword"
+              name="password"
               class="member-password"
               placeholder="Password"
               value=""
@@ -81,7 +86,7 @@
                   type="file"
                   id="input-file"
                   class="upload-hidden form-control-file member-image"
-                  name="memberImage"
+                  name="image"
                 />
               </div>
               <p class="thumbnail-desc">
@@ -93,7 +98,7 @@
           </div>
         </div>
 
-        <input name="memberType" value="RESTAURANT" hidden />
+        <input name="customerType" value="ADMIN" hidden />
 
         <button class="signup-btn btn" name="signup" type="submit">
           Signup

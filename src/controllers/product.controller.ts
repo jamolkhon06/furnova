@@ -3,7 +3,7 @@ import { T } from "../libs/types/common";
 import Errors, { HttpCode, Message } from "../libs/Errors";
 import ProductService from "../models/Product.service";
 import { ProductInput, ProductInquiry } from "../libs/types/product";
-import { AdminRequest, ExtendedRequest } from "../libs/types/member";
+import { AdminRequest, ExtendedRequest } from "../libs/types/customer";
 import { ProductCollection } from "../libs/enums/product.enum";
 
 const productService = new ProductService();
@@ -39,7 +39,7 @@ productController.getProduct = async (req: ExtendedRequest, res: Response) => {
     console.log("getProduct");
 
     const { id } = req.params;
-    const memberId = req.member?._id ?? null,
+    const memberId = req.customer?._id ?? null,
       result = await productService.getProduct(memberId, id);
 
     res.status(HttpCode.OK).json(result);

@@ -1,53 +1,53 @@
 import mongoose, { Schema } from "mongoose";
-import { MemberStatus, MemberType } from "../libs/enums/member.enum";
+import { CustomerStatus, CustomerType } from "../libs/enums/customer.enum";
 
 // Schema first & Code first
 
-const memberSchema = new Schema(
+const customerSchema = new Schema(
   {
-    memberType: {
+    customerType: {
       type: String,
-      enum: MemberType,
-      default: MemberType.USER,
+      enum: CustomerType,
+      default: CustomerType.CUSTOMER,
     },
 
-    memberStatus: {
+    status: {
       type: String,
-      enum: MemberStatus,
-      default: MemberStatus.ACTIVE,
+      enum: CustomerStatus,
+      default: CustomerStatus.ACTIVE,
     },
 
-    memberNick: {
-      type: String,
-      index: { unique: true, sparse: true },
-      required: true,
-    },
-
-    memberPhone: {
+    name: {
       type: String,
       index: { unique: true, sparse: true },
       required: true,
     },
 
-    memberPassword: {
+    phone: {
+      type: String,
+      index: { unique: true, sparse: true },
+      required: true,
+    },
+
+    password: {
       type: String,
       select: false,
       required: true,
     },
 
-    memberAddress: {
+    address: {
       type: String,
     },
 
-    memberDesc: {
+    description: {
       type: String,
     },
 
-    memberImage: {
+    image: {
       type: String,
     },
 
-    memberPoints: {
+    points: {
       type: Number,
       default: 0,
     },
@@ -55,4 +55,4 @@ const memberSchema = new Schema(
   { timestamps: true }, // updatedAt, createdAt
 );
 
-export default mongoose.model("Member", memberSchema);
+export default mongoose.model("Customer", customerSchema);

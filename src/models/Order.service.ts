@@ -1,6 +1,6 @@
 import OrderItemModel from "../schema/OrderItem.model";
 import OrderModel from "../schema/Order.model";
-import { Member } from "../libs/types/member";
+import { Customer } from "../libs/types/customer";
 import {
   Order,
   OrderInquiry,
@@ -10,7 +10,7 @@ import {
 import { shapeIntoMongooseObjectId } from "../libs/config";
 import Errors, { HttpCode, Message } from "../libs/Errors";
 import { ObjectId } from "mongoose";
-import MemberService from "./Member.service";
+import MemberService from "./Customer.service";
 import { OrderStatus } from "../libs/enums/order.enum";
 
 class OrderService {
@@ -25,7 +25,7 @@ class OrderService {
   }
 
   public async createOrder(
-    member: Member,
+    member: Customer,
     input: OrderItemInput[],
   ): Promise<Order> {
     const memberId = shapeIntoMongooseObjectId(member._id);
@@ -66,7 +66,7 @@ class OrderService {
   }
 
   public async getMyOrders(
-    member: Member,
+    member: Customer,
     inquiry: OrderInquiry,
   ): Promise<Order[]> {
     const memberId = shapeIntoMongooseObjectId(member._id);
@@ -103,7 +103,7 @@ class OrderService {
   }
 
   public async updateOrder(
-    member: Member,
+    member: Customer,
     input: OrderUpdateInput,
   ): Promise<Order> {
     const memberId = shapeIntoMongooseObjectId(member._id),

@@ -1,4 +1,4 @@
-import { ExtendedRequest } from "../libs/types/member";
+import { ExtendedRequest } from "../libs/types/customer";
 import { T } from "../libs/types/common";
 import { Response } from "express";
 import Errors, { HttpCode } from "../libs/Errors";
@@ -13,7 +13,7 @@ const orderController: T = {};
 orderController.createOrder = async (req: ExtendedRequest, res: Response) => {
   try {
     console.log("createOrder");
-    const result = await orderService.createOrder(req.member, req.body);
+    const result = await orderService.createOrder(req.customer, req.body);
 
     res.status(HttpCode.CREATED).json(result);
   } catch (err) {
@@ -33,7 +33,7 @@ orderController.getMyOrders = async (req: ExtendedRequest, res: Response) => {
       orderStatus: orderStatus as OrderStatus,
     };
 
-    const result = await orderService.getMyOrders(req.member, inquiry);
+    const result = await orderService.getMyOrders(req.customer, inquiry);
 
     res.status(HttpCode.CREATED).json(result);
   } catch (err) {
@@ -47,7 +47,7 @@ orderController.updateOrder = async (req: ExtendedRequest, res: Response) => {
   try {
     console.log("updateOrder");
     const input: OrderUpdateInput = req.body;
-    const result = await orderService.updateOrder(req.member, input);
+    const result = await orderService.updateOrder(req.customer, input);
 
     res.status(HttpCode.OK).json(result);
   } catch (err) {
